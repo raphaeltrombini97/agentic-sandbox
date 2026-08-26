@@ -1,0 +1,124 @@
+version: 1
+blueprints:
+  code-scanning-remediation:
+    version: 0.2.0
+    installedAt: 2026-08-26T17:47:46.654Z
+    artifacts: {}
+    adapters:
+      source:
+        id: github-code-scanning
+        version: 0.2.0
+      workItem:
+        id: github-issues
+        version: 0.2.0
+      execution:
+        id: copilot-agent
+        version: 0.1.0
+      delivery:
+        id: github-pull-request
+        version: 0.2.0
+      validation:
+        id: pr-evidence
+        version: 0.2.0
+      host:
+        id: github-actions
+        version: 0.2.0
+    config:
+      systems.github.enabled: sha256:b5bea41b6c623f7c09f1bf24dcae58ebab3c0cdd90ad966bc43a45b44867e12b
+generatedBy: agentic@0.1.0
+adapters:
+  github-code-scanning:
+    version: 0.2.0
+    seam: source
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/adapters/source.mjs: sha256:670e3ab1ddbd377be3487fd7cdb9e4d83c8a75a64deb812933770efe814f3a94
+    usedBy:
+      - code-scanning-remediation
+  github-issues:
+    version: 0.2.0
+    seam: workItem
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/adapters/work-item.mjs: sha256:fcce2e8a8f49a47cdf0b6f47a2afde841e84291008cef118a55a38154cae5b5d
+    usedBy:
+      - code-scanning-remediation
+  copilot-agent:
+    version: 0.1.0
+    seam: execution
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/adapters/execution.mjs: sha256:578ce540566466c21d28edc9da76ab4538f95c83fa5aafea199603878bb3b206
+    usedBy:
+      - code-scanning-remediation
+  github-pull-request:
+    version: 0.2.0
+    seam: delivery
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/adapters/delivery.mjs: sha256:a75940669dc89b116aeb63405318f677dbfac6a5444d8f8e615131af7269e01e
+    usedBy:
+      - code-scanning-remediation
+  pr-evidence:
+    version: 0.2.0
+    seam: validation
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/adapters/validation.mjs: sha256:26c2fe78a65a00d314f6222d1766409099d1bec62b0905e42ecac26272ee2a20
+    usedBy:
+      - code-scanning-remediation
+  github-actions:
+    version: 0.2.0
+    seam: host
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      .github/workflows/agentic-code-scanning-remediation-intake.yml: sha256:51497e6fce2eaf504bab71f35a2bf86752d716099d33a6b85d69870b654ed2e7
+      .github/workflows/agentic-code-scanning-remediation-evidence.yml: sha256:283b261ef54c2644f047eb81e57ba0880f68944e1063b5293da77bee74c1f52b
+    usedBy:
+      - code-scanning-remediation
+components:
+  pipeline:
+    version: 0.2.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/intake.mjs: sha256:a20e814e75b8ecdf7556ca0053a79405395fe2fe71a8e4db1d0f6933a49d8643
+      scripts/agentic/pipelines/code-scanning-remediation/evidence-run.mjs: sha256:cce905abbff11c4713ab9b18c97c5886ab7f7f05d82dca3b74c38b0412895830
+      scripts/agentic/pipelines/code-scanning-remediation/checks-run.mjs: sha256:5775e70cc99b53f1de5c8cdf45292d74c36966f88cf780fab39fbea02caa4cb2
+      scripts/agentic/pipelines/code-scanning-remediation/candidate-run.mjs: sha256:bf006bc8555dbf51b83f25ee64fb604ce11aa57bd324237ed90114185f141762
+    usedBy:
+      - code-scanning-remediation
+  http:
+    version: 0.1.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/runtime/http.mjs: sha256:0f3438ffbf99c5c8340f28401f11122b33dd2b629c298cee47fc13ee5267db4f
+    usedBy:
+      - code-scanning-remediation
+  work-request:
+    version: 0.1.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/runtime/work-request.mjs: sha256:e75cbf6b9664d8cb6476e5929b4aba127e0625687abf652ed3d6180ea1def3e9
+    usedBy:
+      - code-scanning-remediation
+  eligibility-policy:
+    version: 0.1.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/runtime/policy.mjs: sha256:e934d12b9064ac26047b465be0c3940856bc544ab12f9be241dab21b579da434
+    usedBy:
+      - code-scanning-remediation
+  evidence:
+    version: 0.2.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/pipelines/code-scanning-remediation/runtime/evidence.mjs: sha256:61949e1e1e8855b28faa35d0e4a010afb14d6e083eb412174547f298fe726760
+    usedBy:
+      - code-scanning-remediation
+  adapter-loader:
+    version: 0.2.0
+    installedAt: 2026-08-26T17:47:46.664Z
+    artifacts:
+      scripts/agentic/runtime/adapter-loader.mjs: sha256:26df5ff3ff65e78ba097845564b75b75f5f44da3bf18598ce689721f17e1495d
+    usedBy:
+      - code-scanning-remediation

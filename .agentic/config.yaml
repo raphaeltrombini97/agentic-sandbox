@@ -1,0 +1,84 @@
+# Managed with the `agentic` CLI. Safe to edit by hand:
+# change values, run `agentic plan`, then `agentic update`.
+# Secret VALUES must never appear in this file - only `env:NAME` references.
+version: 1
+constraints:
+  automaticMerge: false
+  productionAccess: false
+  maxCiAttempts: 2
+blueprints:
+  - id: code-scanning-remediation
+    version: 0.2.0
+    params:
+      baseBranch: main
+      alertState: open
+      alertPageSize: 100
+      maxAlertsPerRun: 20
+      maxDescriptionChars: 55000
+      githubApiVersion: 2022-11-28
+      scannerWaitSeconds: 300
+      scannerPollSeconds: 10
+      issueTitleFormat: "[code-scanning {alertNumber}] {rule}"
+      workRequestLabels:
+        - agentic
+      maxOpenWorkRequests: 5
+      workRequestMode: copilot-agent
+      agentAssignees:
+        - copilot-swe-agent[bot]
+      agentAuthorLogins:
+        - Copilot
+      agentModel: gpt-5.6-luna
+      agentInstructions: |
+        Fix the finding referenced above in this repository, against the
+        `main` branch.
+        - Change only what the finding requires.
+        - Add or update a test that covers the fixed behaviour.
+        - Run the repository's lint, test and build commands.
+        - Use the highest reasoning level available for the selected model.
+        - Open a draft pull request whose title contains the finding reference.
+        - Link the governed work item in the pull request description with
+          `Fixes #<work-item-number>`.
+        - Copy the hidden `agentic-fingerprint` and `agentic-pipeline` markers from
+          the work item into the pull request description unchanged. They are used
+          to classify the pull request before repository code may execute.
+        - In the draft pull request description, use these headings and fill them:
+          `## Confidence` with `Level: low|medium|high` and its basis, `## Checks`
+          with the checks run, `## Assumptions`, and `## Residual risk`.
+          The machine-checked evidence comment is authoritative.
+        - Do not dismiss, close or suppress the finding.
+        - Do not merge the pull request or deploy changes.
+      evidenceCommentMode: comment
+      validationCommands:
+        - echo
+      commandTimeoutSeconds: 900
+      schedule: 0 * * * *
+      githubTokenSource: secret
+      runsOn: ubuntu-latest
+      checkoutAction: actions/checkout@v7
+      nodeVersion: "22"
+      setupNodeAction: actions/setup-node@v7
+      secretNames:
+        AGENT_GITHUB_TOKEN: AGENT_GITHUB_TOKEN
+      maxRetries: 3
+      debugLogging: false
+      securitySeverities:
+        - critical
+        - high
+      includeNonSecurityAlerts: false
+      tools: []
+      ruleAllowList: []
+      ruleDenyList: []
+      pathIncludes: []
+      pathExcludes: []
+      excludeClassifications:
+        - test
+        - generated
+        - library
+      protectedPaths:
+        - .github/workflows/
+        - .agentic/
+        - scripts/agentic/
+      requireTestForTouchedCode: false
+systems:
+  github:
+    enabled: true
