@@ -9,10 +9,8 @@ app = Flask(__name__)
 
 
 def get_user(conn: sqlite3.Connection, username: str):
-    # Intentionally vulnerable: user input concatenated into the query
-    # instead of using a parameterized query. CodeQL rule: py/sql-injection.
-    query = "SELECT id, username, email FROM users WHERE username = '" + username + "'"
-    cursor = conn.execute(query)
+    query = "SELECT id, username, email FROM users WHERE username = ?"
+    cursor = conn.execute(query, (username,))
     return cursor.fetchone()
 
 
